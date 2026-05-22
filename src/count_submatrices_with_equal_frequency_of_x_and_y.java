@@ -1,0 +1,46 @@
+public class count_submatrices_with_equal_frequency_of_x_and_y {
+    public int numberOfSubmatrices(char[][] grid) {
+        int m = grid.length;
+        int n = grid[0].length;
+
+        int[][] cumSumX = new int[m][n];
+        int[][] cumSumY = new int[m][n];
+
+        int count = 0;
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+
+                cumSumX[i][j] = (grid[i][j] == 'X') ? 1 : 0;
+                cumSumY[i][j] = (grid[i][j] == 'Y') ? 1 : 0;
+
+                if (i - 1 >= 0) {
+                    cumSumX[i][j] += cumSumX[i - 1][j];
+                    cumSumY[i][j] += cumSumY[i - 1][j];
+                }
+
+                if (j - 1 >= 0) {
+                    cumSumX[i][j] += cumSumX[i][j - 1];
+                    cumSumY[i][j] += cumSumY[i][j - 1];
+                }
+
+                if (i - 1 >= 0 && j - 1 >= 0) {
+                    cumSumX[i][j] -= cumSumX[i - 1][j - 1];
+                    cumSumY[i][j] -= cumSumY[i - 1][j - 1];
+                }
+
+                if (cumSumX[i][j] == cumSumY[i][j] && cumSumX[i][j] > 0) {
+                    count++;
+                }
+            }
+        }
+
+        return count;
+    }
+    public static void main(String[] args) {
+        count_submatrices_with_equal_frequency_of_x_and_y countSubmatricesWithEqualFrequencyOfXAndY = new count_submatrices_with_equal_frequency_of_x_and_y();
+        char[][] matrix = {{'X','Y','.'},{'Y','.','.'}};
+        System.out.println(countSubmatricesWithEqualFrequencyOfXAndY.numberOfSubmatrices(matrix));
+
+    }
+}
